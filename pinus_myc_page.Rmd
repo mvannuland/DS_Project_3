@@ -1,7 +1,6 @@
 ---
-title: "pinus_myc_page"
+title: "Pinus myc project example"
 author: "Michael Van Nuland"
-date: "11/10/2021"
 output: html_document
 knit: (function(input_file, encoding) {
   out_dir <- 'docs';
@@ -9,13 +8,15 @@ knit: (function(input_file, encoding) {
  encoding=encoding,
  output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
 ---
-***Michael Van Nuland***
-
 ### Project description:
-This project shows an example of customized scripts for linear mixed effects modeling, matrix bootstrapping, and convex hull analysis of response surface volumes in R.
+In this example, I will describe a project using customized scripts for linear mixed effects modeling, matrix bootstrapping, and convex hull analysis of response surface volumes using Plot.ly 3D-surface plots in R.
 
 Data are from Van Nuland et al. (2020) "Symbiotic niche mapping reveals functional specialization by two ectomycorrhizal fungi that expands the host plant niche" in <em>Fungal Ecology</em>. Briefly, this experiment tested how different species of microbial root symbionts fungi (mycorrhizal fungi) influence pine tree responses to soil nutrient limitation. I hypothesized that the fungi would provide greater benefits to the plants under increasing nutrient stress, but that the extent of these positive growth effects would differ depending on the specific fungal species and type of nutrient stress (e.g., nitrogen vs. phosphorus limitation).
-
+ 
+See more details on the full project and published paper here: https://doi.org/10.1016/j.funeco.2020.100960.
+ 
+The dataset for this example can be found here: https://github.com/mvannuland/pinus_myc_project
+ 
 ### Contents: 
 **1   -** Setup
 
@@ -26,12 +27,7 @@ Data are from Van Nuland et al. (2020) "Symbiotic niche mapping reveals function
 **3   -** 3-D response surface plots 
 
 **4   -** Bootstrapped convex hull volume analysis and density plot 
-
-
-See more details on the full project and published paper here: https://doi.org/10.1016/j.funeco.2020.100960.
-
-The dataset for this example can be found here: https://github.com/mvannuland/pinus_myc_project
-
+ 
 ### 1. Getting started
 Load the relevant R libraries and project dataset.
 ```{r message=FALSE}
@@ -109,7 +105,7 @@ ggarrange(N.plot, P.plot, ncol=2, common.legend = TRUE, legend = "bottom")
 
 
 ### 3. 3-D response surface plots
-Visualizing plant growth simultaneously across the two-dimensional axes of critical soil resources (nitrogen and phosphorus).
+This code uses Plot.ly interactive graphing capabilities for visualizing 3D-surfaces of plant biomass growth simultaneously across the two-dimensional axes of critical soil resources (nitrogen and phosphorus).
 ```{r warning=FALSE}
 # Create & smooth 7x7 matrices of total biomass responses across N and P gradients
 Control.mat <- acast(Control, Nitrogen~Phosphorus, value.var = "TotalBiomass", mean, drop=TRUE)
@@ -189,7 +185,7 @@ widg
 
 
 ### 4: Bootstrapped convex hull volume analysis and histogram
-I used a randomized subsampling and bootstrapping approach to create null distributions and calculate error estimates for convex hull volumes of the plant growth response surfaces to the nutrient treatments (above). This allowed me to compare how different fungal symbiont treatments affected the overall size and shape of two-dimensional plant responses to nutrient limitation.
+One main goal of the project was to estimate the geometric volume of the 3D-surface plots and quantify the effects of the different fungal treatments on the resultant volumes. For this, I used the convex hull R function to measure the volume parameters for the response surface plots in each fungal treatment. Specifically, I used a randomized sub-sampling and bootstrapping approach (preserving matrix structure) to create null distributions and calculate error estimates for convex hull volumes of the plant growth response surfaces across the two-dimensional nutrient treatments (above). This allowed me to compare how different fungal symbiont treatments affected the overall size and shape of two-dimensional plant responses to nutrient limitation.
 ```{r warning=FALSE}
 set.seed(1324)
 
